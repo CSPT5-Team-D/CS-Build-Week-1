@@ -19,12 +19,13 @@
 
 import random
 
-
 def print_grid(grid, l, w):
     for i in range(w):
         grid_line = ''
         for j in range(l):
-            grid_line += str(grid[i][j])
+          grid_line += ' '
+          grid_line += str(grid[i][j])
+          grid_line += ' '
         print(grid_line)
 
 
@@ -38,25 +39,21 @@ def print_grid_x(grid, l, w, x, y):
                 grid_line += str(grid[i][j])
         print(grid_line)
 
+rm_count = 0
 
-def generate_room(x, y, length, width, max_rooms, room_count, grid):
-
+def generate_room(x, y, length, width, max_rooms, grid):
+    global rm_count
     # width is the x axis
     # length is the y axis
 
     # Base Case
-    if room_count == max_rooms:
+    if rm_count == max_rooms:
         return
     else:
         # mark this position on the grid with a 1,
-        # increment the room count, and print the grid
+        # increment the room count
         grid[x][y] = 1
-        _room_count = room_count + 1
-        print_grid_x(grid, length, width, x, y)
-
-        # some debuging
-        print(f'generating room {x}:{y}')
-        print(f'room_count: {_room_count}, max_rooms: {max_rooms}')
+        rm_count += 1
 
         # Get available connecting rooms based on grid
         available_rooms = []
@@ -80,33 +77,29 @@ def generate_room(x, y, length, width, max_rooms, room_count, grid):
             if grid[x][y + 1] == 0:
                 available_rooms.append([x, y + 1])
 
-        # debugging
-        print(f'--available rooms--\n{available_rooms}')
-
         counter = 0
         for i in range(len(available_rooms)):
             if random.randint(0, 2) == 1 or counter == len(available_rooms) - 1:
                 generate_room(available_rooms[i][0], available_rooms[i]
-                              [1], length, width, max_rooms, _room_count, grid)
+                              [1], length, width, max_rooms, grid)
             else:
                 counter += 1
 
 
 def world_generator(length, width, max_rooms):
     grid = [[0] * length for i in range(width)]
-    generate_room(0, 0, length, width, max_rooms, 0, grid)
+    generate_room(0, 0, length, width, max_rooms, grid)
     print_grid(grid, length, width)
     return grid
 
-
-width = 25
-length = 25
+width = 20
+length = 20
 new_grid = world_generator(length, width, 100)
 
-counter = 0
+rm_counter = 0
 
 for i in range(width):
     for j in range(length):
-        counter += new_grid[i][j]
+        rm_counter += new_grid[i][j]
 
-print(f'final room count: {counter}')
+print(f'final room count: {rm_counter}')
