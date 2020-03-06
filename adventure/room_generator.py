@@ -96,6 +96,17 @@ def world_generator(length, width, max_rooms):
     grid = [[0] * length for i in range(width)]
     generate_room(0, 0, length, width, max_rooms, 0, grid)
     print_grid(grid, length, width)
+    return grid
 
 
-world_generator(50, 50, 100)
+width = 25
+length = 25
+new_grid = world_generator(length, width, 100)
+
+counter = 0
+
+for i in range(width):
+    for j in range(length):
+        counter += new_grid[i][j]
+
+print(f'final room count: {counter}')
