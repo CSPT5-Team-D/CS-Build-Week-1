@@ -1,6 +1,6 @@
-from django.contrib.auth.models import User
-from adventure.models import Player, Room
 import random
+from adventure.models import Player, Room
+from django.contrib.auth.models import User
 
 
 def print_grid(grid, l, w):
